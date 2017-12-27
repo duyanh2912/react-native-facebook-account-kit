@@ -58,7 +58,14 @@
         UIViewController<AKFViewController> *viewController = [_accountKit viewControllerForPhoneLoginWithPhoneNumber:prefillPhoneNumber state:inputState];
         [self _prepareLoginViewController:viewController];
         UIViewController *rootViewController = [UIApplication sharedApplication].delegate.window.rootViewController;
+        
+        // Find the top most presented ViewController, or else AKFViewController won't be presented
+        while (rootViewController.presentedViewController != NULL) {
+            rootViewController = rootViewController.presentedViewController;
+        }
+        
         [rootViewController presentViewController:viewController animated:YES completion:NULL];
+        rootViewController = NULL;
     });
 }
 
